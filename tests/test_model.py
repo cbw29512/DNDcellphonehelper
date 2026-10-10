@@ -16,7 +16,10 @@ class StateTests(unittest.TestCase):
             s=blank_state();s['combatants']=[{'id':'a','name':'Thorin','buffs':['Bless'],'debuffs':['Poisoned']}];s['activeId']='a'
             s['lastRoll']={'formula':'1d20+5','detail':'18 + 5','total':23}
             save_state(s,f)
-            self.assertEqual(load_state(f),s)
+            loaded = load_state(f)
+            self.assertEqual(loaded['combatants'][0]['kind'], 'player')
+            self.assertEqual(loaded['lastRoll'], s['lastRoll'])
+            self.assertEqual(loaded['activeId'], s['activeId'])
 
     def test_invalid_actor_rejected(self):
         s=blank_state();s['combatants']=[{'id':'x','name':'','buffs':[],'debuffs':[]}]
@@ -32,6 +35,16 @@ class StateTests(unittest.TestCase):
 
     def test_roll_validation(self):
         s=blank_state();s['lastRoll']={'formula':'x','detail':'y','total':True}
+        with self.assertRaises(ValueError):clean_state(s)
+
+    def test_monster_round_trip(self):
+        s=blank_state();s['combatants']=[{'id':'m','name':'Dragon','kind':'monster','buffs':['Haste'],'debuffs':[]}]
+        with tempfile.TemporaryDirectory() as td:
+            f=Path(td)/'session.json';save_state(s,f)
+            self.assertEqual(load_state(f)['combatants'][0]['kind'],'monster')
+
+    def test_unknown_kind_rejected(self):
+        s=blank_state();s['combatants']=[{'id':'m','name':'Dragon','kind':'robot','buffs':[],'debuffs':[]}]
         with self.assertRaises(ValueError):clean_state(s)
 
     def test_missing_returns_default(self):

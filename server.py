@@ -10,7 +10,11 @@ from model import clean_state, load_state, save_state
 ROOT = Path(__file__).resolve().parent
 FILES = {"/": ("index.html", "text/html"), "/player": ("player.html", "text/html"),
          "/styles.css": ("styles.css", "text/css"), "/dice.js": ("dice.js", "text/javascript"),
-         "/app.js": ("app.js", "text/javascript"), "/player.js": ("player.js", "text/javascript")}
+         "/app.js": ("app.js", "text/javascript"), "/player.js": ("player.js", "text/javascript"),
+         "/dice-ui.js": ("dice-ui.js", "text/javascript"),
+         "/cards-ui.js": ("cards-ui.js", "text/javascript"),
+         "/effects-ui.js": ("effects-ui.js", "text/javascript"),
+         "/app-state.js": ("app-state.js", "text/javascript")}
 
 
 class AppServer(ThreadingHTTPServer):

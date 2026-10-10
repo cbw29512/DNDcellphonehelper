@@ -10,7 +10,7 @@ function render(state) {
   $('formula').textContent = roll ? roll.formula : 'Waiting for roll';
   $('detail').textContent = roll ? roll.detail : '';
   $('name').textContent = actor ? actor.name : 'READY';
-  $('round').textContent = 'ROUND '+state.round;
+  $('round').textContent = `ROUND ${state.round}`;
   for (const key of ['buffs','debuffs']) {
     const box = $(key); box.replaceChildren();
     const items = actor?.[key] || [];

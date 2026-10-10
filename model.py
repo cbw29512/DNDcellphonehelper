@@ -26,7 +26,10 @@ def clean_state(data):
         if not isinstance(name, str) or not 1 <= len(name.strip()) <= 36:
             raise ValueError("Invalid combatant name")
         seen.add(ident)
-        clean_actor = {"id": ident, "name": name.strip()}
+        kind = actor.get("kind", "player")
+        if kind not in ("player", "monster"):
+            raise ValueError("Invalid combatant type")
+        clean_actor = {"id": ident, "name": name.strip(), "kind": kind}
         for key in ("buffs", "debuffs"):
             items = actor.get(key)
             if not isinstance(items, list) or len(items) > MAX_EFFECTS:

@@ -1,7 +1,69 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>D&D Control Station</title><link rel="stylesheet" href="/styles.css"></head>
-<body class="dm"><header><h1>D&D Control Station</h1><button id="openPlayer" class="primary">Open Player Display ↗</button></header>
-<main><section class="panel"><h2>🎲 Secure Dice</h2><div class="line"><label class="stretch">Formula<input id="formulaInput" value="1d20+5" aria-label="Dice formula"></label><label>Mode<select id="mode"><option value="normal">Normal</option><option value="advantage">Advantage</option><option value="disadvantage">Disadvantage</option></select></label><button id="rollBtn" class="primary">ROLL</button></div><small>Cryptographic random numbers; no 3D animation. Example: 2d6+3.</small></section>
-<section class="panel"><div class="line spread"><h2>⚔ Initiative Order</h2><div class="line"><button id="prevBtn">◀ PREV</button><button id="nextBtn" class="primary">NEXT ▶</button></div></div><div id="roster" aria-label="Initiative order"></div><div class="line"><input id="actorInput" class="stretch" placeholder="Combatant name" maxlength="36" aria-label="Combatant name"><button id="addBtn">+ Add</button></div><small>Names remain in the order you set. Use ↑ and ↓ to reorder.</small></section>
-<section class="panel"><h2 id="editing">Effects</h2><div class="line"><input id="effectInput" class="stretch" placeholder="Bless, Poisoned, etc." maxlength="32" aria-label="Effect name"><select id="effectType" aria-label="Effect type"><option value="buffs">Buff</option><option value="debuffs">Debuff</option></select><button id="effectBtn">+ Add</button></div><div class="columns"><div><strong class="good">BUFFS</strong><div id="buffs" class="tags"></div></div><div><strong class="bad">DEBUFFS</strong><div id="debuffs" class="tags"></div></div></div><small>Click an effect to remove it. Effects follow each combatant.</small></section>
-<section class="panel preview"><h2>Player Screen Preview</h2><div class="line preview-line"><div><span>ROLL</span><strong id="rollPreview">—</strong></div><div><span>TURN</span><strong id="namePreview">READY</strong><small id="roundPreview">Round 1</small></div></div></section></main>
-<footer role="status" id="message">Starting local app…</footer><script type="module" src="/app.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>D&D Control Station · Cards</title><link rel="stylesheet" href="/styles.css">
+</head>
+<body class="dm">
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">⚔</span><div><strong>D&D Control Station</strong><small>Dice · Initiative · Effects</small></div></div>
+  <button id="openPlayer" class="primary">↗ Player Display</button>
+</header>
+<main class="dashboard">
+  <section class="panel dice-panel">
+    <div class="section-title"><h2>🎲 Quick Dice</h2><span class="muted">One click rolls and sends the result</span></div>
+    <div class="dice-options">
+      <label>Dice count <input id="diceCount" type="number" min="1" max="30" value="1"></label>
+      <label>Modifier <input id="modifier" type="number" min="-999" max="999" value="0"></label>
+      <span class="hint">ADV / DIS always roll a d20</span>
+    </div>
+    <div class="dice-tray" id="diceTray" aria-label="Quick-roll dice">
+      <button class="die" data-sides="4">d4</button><button class="die" data-sides="6">d6</button>
+      <button class="die" data-sides="8">d8</button><button class="die" data-sides="10">d10</button>
+      <button class="die" data-sides="12">d12</button><button class="die die-d20" data-sides="20">d20</button>
+      <button class="die" data-sides="100">d100</button>
+    </div>
+    <div class="dice-footer">
+      <button id="advBtn" class="adv">↑ ADV d20</button>
+      <button id="disBtn" class="dis">↓ DIS d20</button>
+      <form id="customRoll" class="custom-form"><label class="sr-only" for="formulaInput">Custom dice formula</label>
+        <input id="formulaInput" value="2d6+3" placeholder="2d6+3" aria-label="Custom dice formula"><button type="submit">Roll formula</button></form>
+    </div>
+  </section>
+  <div class="work-grid">
+    <section class="panel initiative-panel">
+      <div class="section-title"><div><h2>⚔ Initiative Cards</h2><p class="muted">Drag a card to rearrange the turn order. Click any card to make it current.</p></div>
+        <div class="turn-controls"><button id="prevBtn" title="Previous turn">◀ PREV</button><button id="nextBtn" class="primary" title="Next turn">NEXT ▶</button></div></div>
+      <form id="addActor" class="actor-entry">
+        <input id="actorInput" placeholder="Character or monster name" maxlength="36" aria-label="Combatant name" required>
+        <label class="sr-only" for="actorKind">Card type</label>
+        <select id="actorKind"><option value="player">Hero</option><option value="monster">Monster</option></select>
+        <button type="submit" class="primary">+ Add Card</button>
+      </form>
+      <div id="roster" class="card-roster" aria-label="Drag and drop initiative cards"></div>
+      <div class="card-tip">☷ Drag by the handle to reorder · Tap a card to select · × removes a status</div>
+    </section>
+    <aside class="side-stack">
+      <section class="panel effects-panel">
+        <div class="section-title"><div><h2>✨ Drag-on Effects</h2><p id="editing" class="muted">Choose a card or drag an effect onto it.</p></div></div>
+        <p class="effects-heading good">▲ BUFFS</p><div id="buffPalette" class="effect-palette"></div>
+        <p class="effects-heading bad">▼ DEBUFFS</p><div id="debuffPalette" class="effect-palette"></div>
+        <form id="customEffect" class="custom-effect">
+          <input id="effectInput" placeholder="Custom status" maxlength="32" aria-label="Custom effect name" required>
+          <select id="effectType" aria-label="Buff or debuff"><option value="buffs">Buff</option><option value="debuffs">Debuff</option></select>
+          <button type="submit">+ Apply</button>
+        </form>
+        <p class="muted fineprint">Drag onto any card, or click an effect to apply it to the selected card. Click an active effect on a card to remove it.</p>
+      </section>
+      <section class="panel preview-panel">
+        <div class="section-title"><h2>◉ Live Player Preview</h2><span id="syncStatus" class="sync-pill">Loading</span></div>
+        <div class="preview-body"><div class="preview-cell"><span>LAST ROLL</span><strong id="rollPreview">—</strong><small id="detailPreview"></small></div>
+          <div class="preview-cell"><span>CURRENT TURN</span><strong id="namePreview">READY</strong><small id="roundPreview">ROUND 1</small></div></div>
+        <div class="preview-effects"><span id="previewBuffs" class="good"></span><span id="previewDebuffs" class="bad"></span></div>
+      </section>
+    </aside>
+  </div>
+</main>
+<div class="toast" id="message" role="status" aria-live="polite">Starting…</div>
+<script type="module" src="/app.js"></script>
+</body></html>
