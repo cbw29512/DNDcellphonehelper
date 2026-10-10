@@ -6,16 +6,15 @@
 </head>
 <body class="dm">
 <header class="topbar">
-  <div class="brand"><span class="brand-mark">⚔</span><div><strong>D&D Control Station</strong><small>V2.1 · CARD MODE · Dice · Initiative · Effects</small></div></div>
+  <div class="brand"><span class="brand-mark">⚔</span><div><strong>D&D Control Station</strong><small>V2.2 · RAW ROLLS · Cards · Initiative · Effects</small></div></div>
   <button id="openPlayer" class="primary">↗ Player Display</button>
 </header>
 <main class="dashboard">
   <section class="panel dice-panel">
-    <div class="section-title"><h2>🎲 Quick Dice</h2><span class="muted">One click rolls and sends the result</span></div>
+    <div class="section-title"><h2>🎲 Quick Dice</h2><span class="muted">One click rolls and sends unmodified results</span></div>
     <div class="dice-options">
       <label>Dice count <input id="diceCount" type="number" min="1" max="30" value="1"></label>
-      <label>Modifier <input id="modifier" type="number" min="-999" max="999" value="0"></label>
-      <span class="hint">ADV / DIS always roll a d20</span>
+      <span class="hint">Raw dice only — ADV / DIS roll two d20s and keep the higher/lower result</span>
     </div>
     <div class="dice-tray" id="diceTray" aria-label="Quick-roll dice">
       <button class="die" data-sides="4">d4</button><button class="die" data-sides="6">d6</button>
@@ -27,7 +26,7 @@
       <button id="advBtn" class="adv">↑ ADV d20</button>
       <button id="disBtn" class="dis">↓ DIS d20</button>
       <form id="customRoll" class="custom-form"><label class="sr-only" for="formulaInput">Custom dice formula</label>
-        <input id="formulaInput" value="2d6+3" placeholder="2d6+3" aria-label="Custom dice formula"><button type="submit">Roll formula</button></form>
+        <input id="formulaInput" value="2d6" placeholder="2d6" aria-label="Raw dice formula (no modifiers)"><button type="submit">Roll formula</button></form>
     </div>
   </section>
   <div class="work-grid">

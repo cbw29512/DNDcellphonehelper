@@ -2,9 +2,13 @@
 
 Portable, offline-capable D&D dice and initiative display. Built for a Windows laptop and an iPhone 16 Pro used as a **wired spacedesk second monitor**. No external Python packages, logins, Netlify, or internet connection during play.
 
+## V2.2 — raw rolls only
+
+Dice buttons now roll *without any modifiers*. Standard, ADV, DIS, and custom numeric rolls use only the unmodified random die faces. For multiple dice the total is the sum of faces and the individual results are visible (e.g., `2d6` → `3 + 4` = `7`). Enter modifiers separately in your own DM calculations; the app does not accept `+N` or `-N` in a dice formula.
+
 ## V2 — card-first DM interface
 
-- Quick-roll buttons for d4, d6, d8, d10, d12, d20 and d100. Enter a quantity and modifier once, then click a die; separate instant ADV d20 and DIS d20 buttons. Uses the unchanged cryptographic `getRandomValues()`/rejection-sampling dice engine.
+- Quick-roll buttons for d4, d6, d8, d10, d12, d20 and d100. Enter an optional dice count, then click a die; separate instant ADV d20 and DIS d20 buttons. No modifiers. Uses the unchanged cryptographic `getRandomValues()`/rejection-sampling dice engine.
 - Add hero or monster initiative cards. Drag their handles to reorder, or click arrow controls. Click any card to make it the current turn and use NEXT/PREV to advance through the manual order.
 - Drag a preset buff or debuff onto **any** card. Alternatively, click a preset to toggle it on the selected card; custom effects can also be applied. Remove an active status by clicking its pill on the card.
 - Player display still shows only the latest completed roll, current combatant, and that combatant's buffs (left) and debuffs (right). Full-screen display stays unchanged until the next update.
@@ -27,7 +31,7 @@ V1 uses port **8765**. V2.1 uses **8766** so a V1 process left running cannot hi
 
 ## Dice fairness
 
-The dice engine uses the same cryptographic Web Crypto `getRandomValues` plus rejection-sampling algorithm as the **CUSTOM** dice in Nothing But a Dice Roller (`cbw29512/nothingbutadiceroller`), eliminating modulo bias. Regular and custom numeric dice are secure, **not** 3D simulated physical dice. Supports up to 30 dice per roll (`NdS±modifier`), d2 through d1,000,000; advantage/disadvantage for 1d20. The saved roll is exactly what the player display shows.
+The dice engine uses the same cryptographic Web Crypto `getRandomValues` plus rejection-sampling algorithm as the **CUSTOM** dice in Nothing But a Dice Roller (`cbw29512/nothingbutadiceroller`), eliminating modulo bias. Regular and custom numeric dice are secure, **not** 3D simulated physical dice. Supports up to 30 dice per roll (`NdS±modifier`), d2 through d1,000,000; advantage/disadvantage for 1d20. No roll modifiers. The saved roll is exactly what the player display shows.
 
 ## Architecture and data
 
