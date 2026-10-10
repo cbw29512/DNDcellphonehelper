@@ -54,7 +54,7 @@ class Handler(BaseHTTPRequestHandler):
         if urlparse(self.path).path != "/api/state":
             return self._respond(404, b'{"error":"Not found"}')
         origin = self.headers.get("Origin", "")
-        if origin and origin != "http://127.0.0.1:8765" and origin != f"http://127.0.0.1:{self.server.server_port}":
+        if origin and origin != f"http://127.0.0.1:{self.server.server_port}":
             return self._respond(403, b'{"error":"Invalid origin"}')
         if self.headers.get("Content-Type", "").split(";")[0] != "application/json":
             return self._respond(415, b'{"error":"Expected JSON"}')
@@ -74,12 +74,12 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def main():
-    address = "http://127.0.0.1:8765"
+    address = "http://127.0.0.1:8766"
     try:
-        server = AppServer(("127.0.0.1", 8765), Handler)
+        server = AppServer(("127.0.0.1", 8766), Handler)
     except OSError as exc:
-        raise SystemExit(f"Unable to start server on port 8765: {exc}")
-    print(f"DND Control Station: {address}")
+        raise SystemExit(f"Unable to start CARD MODE server on port 8766: {exc}")
+    print(f"DND Control Station V2.1 CARD MODE: {address}")
     print("To stop: Ctrl+C. Session data stays on this laptop.")
     threading.Timer(0.5, lambda: webbrowser.open(address)).start()
     try:

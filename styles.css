@@ -96,3 +96,6 @@ html { min-height: 100%; }
   .player .big-name { font-size: clamp(36px, 7.2vh, 95px); }
   .player .effect-list { font-size: clamp(14px, 3.9vw, 30px); }
 }
+
+/* V2.1 startup verification: version is always visible beside the application name. */
+.topbar .brand small{color:#b7f7c9;font-weight:800;letter-spacing:.025em}

@@ -10,11 +10,15 @@ Portable, offline-capable D&D dice and initiative display. Built for a Windows l
 - Player display still shows only the latest completed roll, current combatant, and that combatant's buffs (left) and debuffs (right). Full-screen display stays unchanged until the next update.
 - Existing saved V1 sessions load with their original combatants and status effects; cards default to Hero if the old data did not contain a card type.
 
+## V2.1 — fixes old-server startup confusion
+
+V1 uses port **8765**. V2.1 uses **8766** so a V1 process left running cannot hijack the new browser window. The title line displays **V2.1 · CARD MODE**. You can close the old V1 command window and browser tab at any time. Session data remains in the same `%LOCALAPPDATA%` location.
+
 ## Run on Windows
 
 1. Install Python 3 (already available if `py --version` works).
 2. Download/clone this repository and double-click **`start.bat`**. Windows might ask for permission to open Python.
-3. The DM controller opens at **http://127.0.0.1:8765/**.
+3. The DM controller opens at **http://127.0.0.1:8766/**.
 4. Connect the iPhone to spacedesk over USB, and set Windows displays to **Extend** (`Win+P`).
 5. Click **Open Player Display**. Move that window onto the iPhone extended display **once**, and press **F11** to fill its screen. Leave the compact controller on the laptop.
 6. Roll dice, add combatants, move names with the arrows, use NEXT/PREV, and add/remove buffs or debuffs on the laptop. The player window updates automatically.
@@ -27,7 +31,7 @@ The dice engine uses the same cryptographic Web Crypto `getRandomValues` plus re
 
 ## Architecture and data
 
-- **Server:** Python standard library `http.server` bound to `127.0.0.1:8765` only (never exposed to the seminar Wi-Fi).
+- **Server:** Python standard library `http.server` bound to `127.0.0.1:8766` only (never exposed to the seminar Wi-Fi).
 - **DM view:** `/` runs Web Crypto rolls and edits a single canonical session state.
 - **Player:** `/player` polls `/api/state` every 300 ms; independently flashes new roll/turn/effects and holds each until changed.
 - **Persistence:** `%LOCALAPPDATA%\DNDcellphonehelper\session.json` written atomically.
