@@ -17,7 +17,7 @@ export function rollFormula(raw, mode = 'normal') {
   const dice = Array.from({ length: mode === 'normal' ? count : 2 }, () => secureDie(sides));
   const kept = mode === 'advantage' ? Math.max(...dice) : mode === 'disadvantage' ? Math.min(...dice) : dice.reduce((a,b)=>a+b,0);
   const total = kept + modifier;
-  const label = count+'d'+sides+(modifier >= 0 ? '+' : '')+(modifier || '')+(mode === 'normal' ? '' : ' ('+mode+')');
+  const label = count+'d'+sides+(modifier > 0 ? '+' : '')+(modifier || '')+(mode === 'normal' ? '' : ' ('+mode+')');
   const detail = mode === 'normal' ? dice.join(' + ')+(modifier ? ' '+(modifier>0?'+':'-')+' '+Math.abs(modifier) : '') : dice.join(' / ')+' → '+kept+(modifier ? ' '+(modifier>0?'+':'-')+' '+Math.abs(modifier) : '');
   return { formula: label, detail, total };
 }
